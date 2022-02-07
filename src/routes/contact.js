@@ -4,6 +4,6 @@ var { getUserContact, createUserContact, updateUserContact, deleteUserContact } 
 
 /* user contact routes */
 router.route('/user/:id').get(getUserContact).post(createUserContact)
-router.route('/:id/user/:id').put(updateUserContact).delete(deleteUserContact)
+router.route('/:id/user/:userid').put(updateUserContact).delete(deleteUserContact)
 
 module.exports = router;

@@ -7,7 +7,7 @@ exports.up = async function(knex) {
         table.string('contact_value');
         table.string('contact_type');
         table.string('verify_code');
-        table.string('verified').notNullable();
+        table.string('verified').notNullable().defaultTo('0');
         table.timestamps(true, true);
         table.integer('userId').unsigned();
         table.foreign('userId').references('id').inTable(UserModel.tableName);

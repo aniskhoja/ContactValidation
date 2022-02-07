@@ -3,11 +3,6 @@ const logger = require('../logger')
 
 class UserModel extends Model {
     static tableName = "users";
-
-    getColums () {
-        const columns = [ 'firstname', 'lastname', 'username' ];
-        return columns;
-    }
     
     async getById (id) {
         try{
@@ -20,12 +15,12 @@ class UserModel extends Model {
         }
     };
       
-    async creatUser (arg) {
+    async createUser (userInput) {
         try {
             const user = await UserModel.query().insert({
-                firstname: arg.firstname,
-                lastname: arg.lastname,
-                username: arg.username
+                firstname: userInput.firstname,
+                lastname: userInput.lastname,
+                username: userInput.username
             })
             return user;
         } catch (e) {
@@ -63,32 +58,7 @@ class UserModel extends Model {
             return undefined;
         }
     }
-
-    getBodyFilter (body) { 
-        try {
-            const check = {
-                valid: true,
-                message: "success"
-            }
     
-            const columns = this.getColums();
-            for (const item of columns) {
-                if (body.hasOwnProperty(item)) {
-                    if(body[item] === "") {
-                        check.valid = false;
-                        check.message = `${item} cannot be empty`;
-                        return check;
-                    }
-                }
-            }
-            return check;
-        } catch (e) {
-            //log error in logger
-            logger.error(`Get Body Filter Exception thrown: ${e.message}`);
-            return undefined;
-        }
-    }
-
     async deleteUser (id) {
         try {
             const userdelete = await UserModel.query().deleteById(id)

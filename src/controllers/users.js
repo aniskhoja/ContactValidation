@@ -1,6 +1,7 @@
 const UserModel = require('../models/users');
+const getBodyFilter = require('./../utils/getBodyFilter');
 const logger = require('../logger');
-const { loggers } = require('winston');
+
 
 // PR: add try..catch to all controller, return json error and add logger if possible
 
@@ -28,11 +29,13 @@ const getuser = async (req, res) => {
 const createUser = async (req, res) => {
     //object destructuring
     const { firstname, lastname, username } = req.body;
+    const columns = [ 'firstname', 'lastname', 'username' ];
+
     //create user object
     const user = new UserModel();
 
     try {
-        const validateReq = await user.getBodyFilter(req.body); 
+        const validateReq = await getBodyFilter(req.body, columns); 
         //throw an error
         if (!validateReq.valid) return res.status(400).send(validateReq.message);
     } catch (e) {
@@ -50,10 +53,10 @@ const createUser = async (req, res) => {
         logger.error(`UserExist: controller failed ${e.message}`);
     }
     
-    const userCreated = await user.creatUser(req.body);
+    const userCreated = await user.createUser(req.body);
     
     //output success
-    res.status(200).send(userCreated);
+    res.status(201).send(userCreated);
 }
 
 const updateUser = async (req, res) => {
